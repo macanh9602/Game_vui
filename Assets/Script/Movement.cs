@@ -23,6 +23,6 @@ public class Movement : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             //transform.Translate(xInput * 10f * Time.deltaTime, 0, 0);
-        }
+        }//
     }
 }
