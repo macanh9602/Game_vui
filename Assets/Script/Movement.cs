@@ -10,7 +10,9 @@ public class Movement : MonoBehaviour
 
     Animator animator;
 
-    [SerializeField] float speed = 70f;
+    [SerializeField] float speed = 70f; // toc chay
+
+    [SerializeField] float jumpForce = 2f;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +29,8 @@ public class Movement : MonoBehaviour
         Debug.Log(xInput);
         Move(xInput);
         FlipFace();
+        Jump();
+
     }
     void Move(float _xInput)
     {
@@ -45,8 +49,15 @@ public class Movement : MonoBehaviour
         {
             transform.localScale = new Vector3(-Mathf.Sign(rb.velocity.x), transform.localScale.y);
         }
-
-
     }
+
+    void Jump()
+    {
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+        {
+            rb.AddForce(new Vector2(rb.velocity.x, jumpForce));
+        }
+    }
+
 
 }
