@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -12,13 +13,18 @@ public class Movement : MonoBehaviour
 
     [SerializeField] float speed = 70f; // toc chay
 
-    [SerializeField] float jumpForce = 2f;
+    [SerializeField] float jumpForce = 20f;
+
+    bool IsOnGround = true;
+
+    CircleCollider2D thisCollision;
     // Start is called before the first frame update
     void Start()
     {
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        thisCollision = GetComponent<CircleCollider2D>();
         rb.velocity = Vector3.zero;
     }
 
@@ -26,11 +32,10 @@ public class Movement : MonoBehaviour
     void Update()
     {
         float xInput = UnityEngine.Input.GetAxisRaw("Horizontal");
-        Debug.Log(xInput);
+        //Debug.Log(xInput);
         Move(xInput);
         FlipFace();
         Jump();
-
     }
     void Move(float _xInput)
     {
@@ -53,11 +58,21 @@ public class Movement : MonoBehaviour
 
     void Jump()
     {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Space) && thisCollision.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
-            rb.AddForce(new Vector2(rb.velocity.x, jumpForce));
+            //Debug.Log("jump");
+            rb.AddForce(new Vector2(0, jumpForce));
+            animator.SetBool("IsJump", true);
+        }
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            animator.SetBool("Jump", false);
         }
     }
 
-
 }
+
+
