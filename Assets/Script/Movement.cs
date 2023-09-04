@@ -15,13 +15,15 @@ public class Movement : MonoBehaviour
 
     [SerializeField] float jumpForce = 20f;
 
-    bool IsOnGround = true;
+    Vector2 vecGravity;
+    [SerializeField] float newtonPower = 0f;
 
     CircleCollider2D thisCollision;
     // Start is called before the first frame update
     void Start()
     {
-
+        vecGravity = new Vector2(0f, -Physics2D.gravity.y);
+        Debug.Log(Physics2D.gravity);
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         thisCollision = GetComponent<CircleCollider2D>();
@@ -35,6 +37,7 @@ public class Movement : MonoBehaviour
         //Debug.Log(xInput);
         Move(xInput);
         FlipFace();
+        animator.SetFloat("yVelocity", rb.velocity.y);
         Jump();
     }
     void Move(float _xInput)
@@ -63,13 +66,22 @@ public class Movement : MonoBehaviour
             //Debug.Log("jump");
             rb.AddForce(new Vector2(0, jumpForce));
             animator.SetBool("IsJump", true);
+
+        }
+
+        if (rb.velocity.y < 0)   // luc huong xuong dat
+        {
+            rb.velocity -= newtonPower * vecGravity * Time.deltaTime;
+            Debug.Log(rb.velocity);
         }
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            animator.SetBool("Jump", false);
+
+            animator.SetBool("IsJump", false);
+            //Debug.Log("Cham dat");
         }
     }
 
