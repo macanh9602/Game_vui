@@ -15,10 +15,14 @@ public class Movement : MonoBehaviour
 
     [SerializeField] float jumpForce = 20f;
 
+    [SerializeField] float jumpSpeed = 5f;
+
     Vector2 vecGravity;
     [SerializeField] float newtonPower = 0f;
 
     CircleCollider2D thisCollision;
+    BoxCollider2D footCollision;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +31,7 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         thisCollision = GetComponent<CircleCollider2D>();
+        footCollision = GetComponent<BoxCollider2D>();
         rb.velocity = Vector3.zero;
     }
 
@@ -37,17 +42,19 @@ public class Movement : MonoBehaviour
         //Debug.Log(xInput);
         Move(xInput);
         FlipFace();
-        animator.SetFloat("yVelocity", rb.velocity.y);
+        animator.SetFloat("yVelocity", rb.velocity.y); // hoat canh nhay len xuong theo van toc vua y
         Jump();
     }
     void Move(float _xInput)
     {
-        bool IsMove = rb.velocity.x != 0;
         rb.velocity = new Vector2(_xInput * speed, rb.velocity.y);
-        if (rb.velocity != null)
-        {
-            animator.SetBool("IsRunning", IsMove);
-        }
+        bool IsMove = Mathf.Abs(rb.velocity.x) > 0;
+
+        //if (rb.velocity != null)
+        //{
+        animator.SetBool("IsRunning", IsMove);
+
+        //}
 
     }
     void FlipFace()
@@ -61,10 +68,11 @@ public class Movement : MonoBehaviour
 
     void Jump()
     {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Space) && thisCollision.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Space) && footCollision.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             //Debug.Log("jump");
-            rb.AddForce(new Vector2(0, jumpForce));
+            //rb.AddForce(new Vector2(0, jumpForce));
+            rb.velocity = new Vector2(0f, jumpSpeed);
             animator.SetBool("IsJump", true);
 
         }
@@ -72,19 +80,19 @@ public class Movement : MonoBehaviour
         if (rb.velocity.y < 0)   // luc huong xuong dat
         {
             rb.velocity -= newtonPower * vecGravity * Time.deltaTime;
-            Debug.Log(rb.velocity);
+            //Debug.Log(rb.velocity);
         }
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("MovingObject")) // cham dat hoac cham vat the bay
         {
 
             animator.SetBool("IsJump", false);
-            //Debug.Log("Cham dat");
-        }
-    }
 
+        }
+
+    }
 }
 
 

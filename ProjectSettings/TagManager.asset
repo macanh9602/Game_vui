@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - MovingObject
+  - Congtac
   layers:
   - Default
   - TransparentFX
@@ -50,4 +52,7 @@ TagManager:
     locked: 0
   - name: tile
     uniqueID: 4180682039
+    locked: 0
+  - name: trap
+    uniqueID: 3341557411
     locked: 0
