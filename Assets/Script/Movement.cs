@@ -80,19 +80,41 @@ public class Movement : MonoBehaviour
         if (rb.velocity.y < 0)   // luc huong xuong dat
         {
             rb.velocity -= newtonPower * vecGravity * Time.deltaTime;
+            animator.SetBool("IsJump", false);
+
             //Debug.Log(rb.velocity);
         }
     }
-    void OnCollisionEnter2D(Collision2D collision)
+   
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("MovingObject")) // cham dat hoac cham vat the bay
+        if ( collision.gameObject.CompareTag("MovingObject"))
+        // cham dat hoac cham vat the bay
+        {
+
+            animator.SetBool("IsJump", false);
+
+        }
+        if (collision.tag=="Ground")
+        // cham dat hoac cham vat the bay
+        {
+
+            animator.SetBool("IsJump", false);
+
+        }
+    }
+    //hello
+  /*  void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("MovingObject"))
+            // cham dat hoac cham vat the bay
         {
 
             animator.SetBool("IsJump", false);
 
         }
 
-    }
+    }*/
 }
 
 
