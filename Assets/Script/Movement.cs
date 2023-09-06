@@ -13,8 +13,6 @@ public class Movement : MonoBehaviour
 
     [SerializeField] float speed = 70f; // toc chay
 
-    [SerializeField] float jumpForce = 20f;
-
     [SerializeField] float jumpSpeed = 5f;
 
     Vector2 vecGravity;
@@ -42,6 +40,7 @@ public class Movement : MonoBehaviour
         //Debug.Log(xInput);
         Move(xInput);
         FlipFace();
+
         animator.SetFloat("yVelocity", rb.velocity.y); // hoat canh nhay len xuong theo van toc vua y
         Jump();
     }
@@ -80,22 +79,26 @@ public class Movement : MonoBehaviour
         if (rb.velocity.y < 0)   // luc huong xuong dat
         {
             rb.velocity -= newtonPower * vecGravity * Time.deltaTime;
-            animator.SetBool("IsJump", false);
+
 
             //Debug.Log(rb.velocity);
         }
+        if (rb.velocity.y <= 0 && thisCollision.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        {
+            animator.SetBool("IsJump", false);
+        }
     }
-   
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if ( collision.gameObject.CompareTag("MovingObject"))
+        if (collision.gameObject.CompareTag("MovingObject"))
         // cham dat hoac cham vat the bay
         {
 
             animator.SetBool("IsJump", false);
 
         }
-        if (collision.tag=="Ground")
+        if (collision.tag == "Ground")
         // cham dat hoac cham vat the bay
         {
 
@@ -104,17 +107,17 @@ public class Movement : MonoBehaviour
         }
     }
     //hello
-  /*  void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("MovingObject"))
-            // cham dat hoac cham vat the bay
-        {
+    /*  void OnCollisionEnter2D(Collision2D collision)
+      {
+          if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("MovingObject"))
+              // cham dat hoac cham vat the bay
+          {
 
-            animator.SetBool("IsJump", false);
+              animator.SetBool("IsJump", false);
 
-        }
+          }
 
-    }*/
+      }*/
 }
 
 
