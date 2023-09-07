@@ -36,7 +36,7 @@ public class CongTac : MonoBehaviour
                 {
                     sequence.Append(shap.GetComponent<SpriteRenderer>().DOFade(1f, 0.2f).OnComplete(() =>
                     shap.gameObject.GetComponent<BoxCollider2D>().isTrigger = false));
-                    sequence.Append(shap.transform.DOMoveY(-5.5f, 1f)).SetEase(Ease.InOutBounce);
+                    sequence.Append(shap.transform.DOMoveY(-5.7f, 1f)).SetEase(Ease.InOutBounce);
                 }
                 sequence.Play();
             });
